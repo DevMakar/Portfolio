@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статьи - Макар Макаров</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="description" content="Статьи и публикации Макара Макарова - Python Web-разработчика.">
+</head>
+<body>
+    <!-- Видео фон -->
+    <video id="video-background" autoplay muted loop>
+        <source src="{% static 'img/background.mp4' %}" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <div class="content-overlay">
+        <header>
+            <h1>Мои статьи</h1>
+            <p>Публикации и размышления о программировании</p>
+        </header>
+    
+        <div class="container">
+            <section class="articles-section">
+                <h2>Статьи</h2>
+                <div class="articles-container">
+                    {% for article in articles %}
+                        <div class="article-card">
+                            <h3 class="article-title">{{ article.title }}</h3>
+                            <div class="article-content">
+                                <p>{{ article.content }}</p>
+                            </div>
+                            <div class="article-meta">
+                                <span class="article-date">{{ article.created_at }}</span>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="no-articles">
+                            <p>Пока нет опубликованных статей.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    
+        <footer>
+            <p>© 2025 Макар Макаров Романович. Все права защищены.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Оптимизация производительности для слабых устройств
+        (function() {
+            const video = document.getElementById('video-background');
+            const isLowEndDevice = navigator.hardwareConcurrency <= 2 || 
+                                 navigator.deviceMemory <= 4 ||
+                                 /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isLowEndDevice) {
+                // Уменьшаем качество видео на слабых устройствах
+                video.style.opacity = '0.6';
+                video.style.filter = 'contrast(1.2) saturate(1.1) brightness(1.0)';
+                
+                // Приостанавливаем видео при скролле для экономии ресурсов
+                let isScrolling = false;
+                window.addEventListener('scroll', function() {
+                    if (!isScrolling) {
+                        isScrolling = true;
+                        video.pause();
+                        setTimeout(function() {
+                            video.play();
+                            isScrolling = false;
+                        }, 100);
+                    }
+                });
+            }
+            
+            // Предзагрузка видео
+            video.addEventListener('loadstart', function() {
+                video.style.opacity = '0';
+            });
+            
+            video.addEventListener('canplay', function() {
+                video.style.opacity = isLowEndDevice ? '0.6' : '0.9';
+            });
+            
+            // Обработка ошибок видео
+            video.addEventListener('error', function() {
+                document.body.style.background = 'linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)';
+            });
+        })();
+    </script>
+
+</body>
+</html>

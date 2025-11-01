@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обо мне - Макар Макаров</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="description" content="Подробная информация о Макаре Макарове - Python Web-разработчике из Кишинева, Молдова.">
+</head>
+<body>
+    <!-- Видео фон -->
+    <video id="video-background" autoplay muted loop>
+        <source src="{% static 'img/background.mp4' %}" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <div class="content-overlay">
+    <header>
+        <h1>Обо мне</h1>
+        <p>Подробная информация о моем пути в программировании</p>
+    </header>
+    
+    <div class="container">
+        <section class="profile-section">
+            <div class="photo-container">
+                <img src="{% static 'img/myphoto2.jpg' %}" alt="Макар Макаров" class="profile-photo" onclick="openPhotoModal()">
+            </div>
+            
+            <div class="about-section">
+                <h2>Моя история</h2>
+                <div class="about-content">
+                    <p>Привет! Я - Макар Макаров, программист который занимается Python Web-Разработкой. Я живу в Молдове, в городе Кишинев, я очень мечтаю стать хорошим и популярным программистом.</p>
+                    
+                    <p>Мой путь в программировании начался с изучения основ Python. Я увлекся возможностями этого языка и его простотой в изучении. Постепенно я начал изучать веб-разработку и фреймворк Django.</p>
+                    
+                    <p>Сейчас я активно развиваюсь в области backend-разработки, изучаю новые технологии и стремлюсь создавать качественные веб-приложения. Моя цель - стать профессиональным разработчиком и внести свой вклад в мир технологий.</p>
+                </div>
+            </div>
+            
+            <div class="skills-section">
+                <h2>Мои навыки</h2>
+                <div class="skills-content">
+                    <div class="skills-icons">
+                        <div class="skill-item">
+                          <img src="{% static 'img/python.png' %}" alt="Python">
+                          <div class="skill-text">
+                            <strong>Python</strong>
+                            <span>Основы языка, работа с библиотеками</span>
+                          </div>
+                        </div>
+                        <div class="skill-item skill-item--django">
+                          <img src="{% static 'img/dj.png' %}" alt="Django">
+                          <div class="skill-text">
+                            <strong>Django</strong>
+                            <span>Создание веб-приложений, работа с моделями</span>
+                          </div>
+                        </div>
+                        <div class="skill-item skill-item--htmlcss">
+                          <img src="{% static 'img/Html_Css.png' %}" alt="HTML & CSS">
+                          <div class="skill-text">
+                            <strong>HTML/CSS</strong>
+                            <span>Верстка и стилизация веб-страниц</span>
+                          </div>
+                        </div>
+                        <div class="skill-item">
+                          <img src="{% static 'img/GitHub.png' %}" alt="GitHub">
+                          <div class="skill-text">
+                            <strong>GitHub</strong>
+                            <span>Умение выкладывать свои проекты на GitHub</span>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="goals-section">
+                <h2>Мои цели</h2>
+                <div class="goals-content">
+                    <p>Я стремлюсь стать профессиональным Python-разработчиком и создать собственные проекты, которые будут полезны людям. Моя мечта - работать в команде опытных разработчиков и постоянно совершенствовать свои навыки.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>© 2025 Макар Макаров Романович. Все права защищены.</p>
+    </footer>
+    </div>
+
+    <!-- Модальное окно для просмотра фото -->
+    <div id="photoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePhotoModal()">&times;</span>
+            <img src="{% static 'img/myphoto2.jpg' %}" alt="Макар Макаров" class="modal-photo">
+        </div>
+    </div>
+
+    <script>
+        // Функции для модального окна фото
+        function openPhotoModal() {
+            document.getElementById('photoModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePhotoModal() {
+            document.getElementById('photoModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Закрытие модального окна при клике вне изображения
+        window.onclick = function(event) {
+            const modal = document.getElementById('photoModal');
+            if (event.target === modal) {
+                closePhotoModal();
+            }
+        }
+
+        // Закрытие модального окна по клавише Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closePhotoModal();
+            }
+        });
+
+        // Оптимизация производительности для слабых устройств
+        (function() {
+            const video = document.getElementById('video-background');
+            const isLowEndDevice = navigator.hardwareConcurrency <= 2 || 
+                                 navigator.deviceMemory <= 4 ||
+                                 /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isLowEndDevice) {
+                // Уменьшаем качество видео на слабых устройствах
+                video.style.opacity = '0.6';
+                video.style.filter = 'contrast(1.2) saturate(1.1) brightness(1.0)';
+                
+                // Приостанавливаем видео при скролле для экономии ресурсов
+                let isScrolling = false;
+                window.addEventListener('scroll', function() {
+                    if (!isScrolling) {
+                        isScrolling = true;
+                        video.pause();
+                        setTimeout(function() {
+                            video.play();
+                            isScrolling = false;
+                        }, 100);
+                    }
+                });
+            }
+            
+            // Предзагрузка видео
+            video.addEventListener('loadstart', function() {
+                video.style.opacity = '0';
+            });
+            
+            video.addEventListener('canplay', function() {
+                video.style.opacity = isLowEndDevice ? '0.6' : '0.9';
+            });
+            
+            // Обработка ошибок видео
+            video.addEventListener('error', function() {
+                document.body.style.background = 'linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)';
+            });
+        })();
+    </script>
+
+</body>
+</html>
